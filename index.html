@@ -1,173 +1,330 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="birthday_cake.png" />
-    <title>¡Tu Cumpleaños 🎉 es en:  !</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            background-color: black;
-            color: white;
-            text-align: center;
-            margin: 0;
-            overflow: hidden; /* Evita barras de desplazamiento */
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/png" href="birthday_cake.png" />
+  <title>Cuenta regresiva - Feliz Cumpleaños Anii</title>
+  <style>
+    :root{
+      --bg:#000;
+      --gold:#ffd36b;
+      --neon-gold: 0 0 8px rgba(255,211,107,0.6), 0 0 20px rgba(255,180,40,0.25), 0 0 40px rgba(255,150,20,0.15);
+      --neon-1: 0 0 6px rgba(255,80,200,0.35), 0 0 18px rgba(255,80,200,0.12);
+      --glass: rgba(255,255,255,0.02);
+    }
+    html,body{height:100%;margin:0;background:var(--bg);color:#fff;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;}
+    .wrap{min-height:100%;display:flex;align-items:center;justify-content:center;padding:28px;box-sizing:border-box;}
 
-        #countdown-container {
-            margin-top: 50vh; /* Centra verticalmente */
-            transform: translateY(-50%);
-            font-size: 3em;
-            text-shadow: 0 0 10px gold, 0 0 20px gold, 0 0 30px gold; /* Efecto neon dorado */
-        }
+    .card{
+      width:100%;max-width:920px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:18px;padding:28px;box-shadow:0 8px 30px rgba(0,0,0,0.7);position:relative;overflow:hidden;border:1px solid rgba(255,215,120,0.06);
+    }
 
-        #message-container {
-            margin-top: 50vh; /* Centra verticalmente */
-            transform: translateY(-50%);
-            font-size: 3em;
-            display: none; /* Oculto inicialmente */
-        }
+    /* Decorative corner neon frames */
+    .card::before, .card::after{
+      content:'';position:absolute;width:90px;height:90px;border-radius:14px;pointer-events:none;mix-blend-mode:screen;opacity:0.65;filter:blur(10px);
+    }
+    .card::before{top:-18px;left:-18px;background:linear-gradient(135deg,#ff66b2,#ffd36b);}
+    .card::after{right:-18px;bottom:-18px;background:linear-gradient(135deg,#6be6ff,#9bff9b);}
 
-        .neon-text {
-            color: #fff;
-            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #ff00de, 0 0 30px #ff00de, 0 0 40px #ff00de; /* Neon rosa */
-        }
+    header{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:18px}
+    h1{font-size:14px;letter-spacing:2px;color:#ccc;margin:0;text-transform:uppercase}
+    .subtitle{font-size:13px;color:#aaa}
 
-        .heart-neon {
-            font-size: 1.2em; /* Ajusta el tamaño del corazón */
-        }
+    .time-frame{display:flex;flex-direction:column;align-items:center}
+    .label{font-size:18px;color:#ddd;margin-bottom:12px;text-align:center}
 
-        /* Confetti */
-        .confetti {
-            position: absolute;
-            background-color: #f00; /* Color inicial, se cambiará */
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            animation: confetti-fall 5s linear forwards, confetti-rotate 5s linear infinite;
-        }
+    .countdown{
+      display:flex;gap:12px;flex-wrap:wrap;justify-content:center;align-items:center
+    }
+    .unit{
+      min-width:120px;background:rgba(0,0,0,0.35);border-radius:12px;padding:16px 14px;text-align:center;backdrop-filter:blur(4px);border:1px solid rgba(255,215,120,0.06)
+    }
+    .value{font-size:26px;font-weight:700;color:var(--gold);text-shadow: var(--neon-gold);letter-spacing:1px}
+    .label-unit{font-size:12px;color:#ddd;margin-top:6px}
 
-        @keyframes confetti-fall {
-            to {
-                transform: translateY(100vh);
-            }
-        }
+    /* neon congrats panel */
+    .congrats{display:none;flex-direction:column;align-items:center;gap:14px;padding:20px}
+    .congrats .neon{
+      font-size:32px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:#fff;text-align:center;line-height:1;
+      text-shadow: 0 0 8px rgba(255,100,200,0.18), 0 0 20px rgba(255,160,70,0.12), 0 0 36px rgba(120,240,255,0.06);
+      animation:pulse 3s infinite;
+    }
+    @keyframes pulse {
+      0% { opacity: 0.8; text-shadow: 0 0 8px rgba(255,100,200,0.25), 0 0 25px rgba(255,160,70,0.15), 0 0 45px rgba(120,240,255,0.1); }
+      50% { opacity: 1; text-shadow: 0 0 14px rgba(255,100,200,0.45), 0 0 35px rgba(255,160,70,0.3), 0 0 65px rgba(120,240,255,0.25); }
+      100% { opacity: 0.8; text-shadow: 0 0 8px rgba(255,100,200,0.25), 0 0 25px rgba(255,160,70,0.15), 0 0 45px rgba(120,240,255,0.1); }
+    }20%,24%,50%{opacity:0.85}
+    }
 
-        @keyframes confetti-rotate {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
+    .heart-wrap{display:flex;align-items:center;gap:12px}
+    .heart-svg{width:78px;height:78px;filter:drop-shadow(0 0 12px rgba(255,60,140,0.5));}
 
-        /* Posicionamiento de confetti */ 🎉
-        .confetti-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none; /* Permite que el confetti no interfiera con los clics */
-            z-index: 1000; /* Asegura que el confetti esté por encima de todo */
-        }
+    .extra-decor{position:absolute;inset:0;pointer-events:none}
+    .glow-ring{position:absolute;inset:-30px;mix-blend-mode:screen;filter:blur(40px);opacity:0.08}
 
-        /* Media queries para responsividad */
-        @media (max-width: 768px) {
-            #countdown-container, #message-container {
-                font-size: 2em; /* Reduce el tamaño en dispositivos móviles */
-            }
-        }
-    </style>
+    footer{display:flex;justify-content:space-between;align-items:center;margin-top:18px;color:#999;font-size:12px}
+
+    /* confetti canvas */
+    #confetti{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
+
+    /* Responsive tweaks */
+    @media (max-width:600px){.unit{min-width:86px;padding:10px}.value{font-size:20px}.congrats .neon{font-size:22px}.heart-svg{width:56px;height:56px}}
+
+  </style>
 </head>
 <body>
+  <div class="wrap">
+    <div class="card" role="main" aria-live="polite">
+      <header>
+        <h1>Cuenta especial</h1>
+        <div class="subtitle">Cada 22 de noviembre — celebración anual</div>
+      </header>
 
-    <div id="countdown-container">
-        <!-- El conteo regresivo se mostrará aquí -->
+      <div class="time-frame">
+        <div class="label">Tiempo Restante:</div>
+
+        <div id="countdownArea">
+          <div class="countdown" id="countdown">
+            <!-- dynamic units -->
+          </div>
+        </div>
+
+        <div class="congrats" id="congrats">
+          <div class="neon">Feliz Cumpleaños Anii</div>
+          <div class="heart-wrap">
+            <!-- neon heart SVG -->
+            <svg class="heart-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <linearGradient id="g1" x1="0" x2="1">
+                  <stop offset="0%" stop-color="#ff66b2" />
+                  <stop offset="50%" stop-color="#ffd36b" />
+                  <stop offset="100%" stop-color="#6be6ff" />
+                </linearGradient>
+                <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="3.8" result="b" />
+                  <feMerge>
+                    <feMergeNode in="b" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+              <style>
+                @keyframes heartColorShift {
+                  0% { stroke: #ff66b2; }
+                  25% { stroke: #ffd36b; }
+                  50% { stroke: #6be6ff; }
+                  75% { stroke: #9bff9b; }
+                  100% { stroke: #ff66b2; }
+                }
+              </style>
+              <path d="M12 21s-7.5-4.7-9.5-7.2C-0.2 8.8 5.1 4 7.9 6.4 10 8.4 12 10 12 10s2-1.6 4.1-3.6C18.9 4 24.2 8.8 21.5 13.8 19.5 16.3 12 21 12 21z"
+                fill="none" stroke="#ff66b2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)" style="animation: heartColorShift 4s infinite;"/>
+            </svg>
+            <div style="text-align:left">
+              <div style="font-weight:700;color:#ffd36b;text-shadow:var(--neon-gold)">Te Amo ❤❤❤</div>
+            </div>
+          </div>
+          <div style="max-width:720px;text-align:center;color:#ddd;font-size:14px;opacity:0.95">Una semana para celebrar — disfruta el brillo, confetti y cariño.</div>
+        </div>
+      </div>
+
+      <canvas id="confetti"></canvas>
+
+      <div class="extra-decor">
+        <div class="glow-ring" style="background:radial-gradient(circle at 20% 20%, rgba(255,160,40,0.08), transparent 12%), radial-gradient(circle at 80% 80%, rgba(120,200,255,0.06), transparent 20%);"></div>
+      </div>
+
+      <footer>
+        <div>Diseñado con ❤️ — Estilo Neon</div>
+        <div id="note"></div>
+      </footer>
     </div>
+  </div>
 
-    <div id="message-container">
-        <span class="neon-text">Feliz Cumpleaños</span> <span class="neon-text heart-neon">♥</span> <span class="neon-text">Anii! Te Amo ❤❤</span>
-    </div>
+  <script>
+    // Spanish months
+    const monthsEs = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
-    <div id="confetti-container" class="confetti-container">
-        <!-- Confetti se generará aquí -->
-    </div>
+    const countdownEl = document.getElementById('countdown');
+    const congratsEl = document.getElementById('congrats');
+    const countdownArea = document.getElementById('countdownArea');
+    const note = document.getElementById('note');
 
-    <script>
-        const countdownContainer = document.getElementById('countdown-container');
-        const messageContainer = document.getElementById('message-container');
-        const confettiContainer = document.getElementById('confetti-container');
-        let intervalId; // Para guardar el ID del intervalo y poder detenerlo
+    const CONFETTI_KEY = 'anii_unlocked_until_v1';
 
-        // Fecha objetivo
-        const targetDate = new Date(2025, 10, 22, 0, 0, 0); // Noviembre es el mes 10 (0-11)
+    // determine the next Nov 22 in local time
+    function nextNov22(now){
+      const year = now.getFullYear();
+      // create Nov 22 at 00:00:00 local time
+      let candidate = new Date(year, 10, 22, 0,0,0,0); // monthIndex 10 = Nov
+      if(now > candidate){
+        candidate = new Date(year+1, 10, 22, 0,0,0,0);
+      }
+      return candidate;
+    }
 
-        function updateCountdown() {
-            const now = new Date();
-            const timeLeft = targetDate - now;
+    // create units display
+    function renderUnits(delta){
+      // delta in ms
+      if(delta < 0) delta = 0;
+      const s = Math.floor(delta/1000)%60;
+      const m = Math.floor(delta/60000)%60;
+      const h = Math.floor(delta/3600000)%24;
+      const d = Math.floor(delta/86400000);
+      // Month Day ??? The user wants format Mes Dia Hora Minuto Segundo
+      // We'll show month name and day of upcoming Nov 22 plus d h m s
 
-            if (timeLeft <= 0) {
-                clearInterval(intervalId); // Detener el conteo 🚦
-                showCelebration();
-                return;
-            }
+      const target = nextNov22(new Date());
+      const month = monthsEs[target.getMonth()];
+      const day = target.getDate();
 
-            const months = Math.floor(timeLeft / (1000 * 60 * 60 * 24 * 30));
-            const days = Math.floor((timeLeft % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+      const units = [
+        {v: month + ' ' + day, l: 'Mes Día'},
+        {v: String(d).padStart(2,'0'), l: 'Días'},
+        {v: String(h).padStart(2,'0'), l: 'Horas'},
+        {v: String(m).padStart(2,'0'), l: 'Minutos'},
+        {v: String(s).padStart(2,'0'), l: 'Segundos'}
+      ];
 
-            countdownContainer.textContent = `${months} Meses ${days} Días ${hours} Horas ${minutes} Minutos ${seconds} Segundos`;
+      countdownEl.innerHTML = '';
+      units.forEach(u=>{
+        const el = document.createElement('div');el.className='unit';
+        const v = document.createElement('div');v.className='value';v.textContent=u.v;
+        const la = document.createElement('div');la.className='label-unit';la.textContent=u.l;
+        el.appendChild(v);el.appendChild(la);
+        countdownEl.appendChild(el);
+      });
+    }
+
+    // confetti system (simple canvas particles from sides)
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+    let W,H; function resize(){W=canvas.width=canvas.clientWidth;H=canvas.height=canvas.clientHeight} window.addEventListener('resize',resize); resize();
+
+    const confettiParticles = [];
+    function spawnConfettiBurst(fromSide='both', count=80){
+      for(let i=0;i<count;i++){
+        const side = fromSide==='both'? (Math.random()<0.5?'left':'right'):fromSide;
+        const x = side==='left'? -20 : W+20;
+        const y = Math.random()*H;
+        confettiParticles.push({x,y,vx: (side==='left'? (2+Math.random()*6):(-2-Math.random()*6)), vy: -2+Math.random()*6, size:4+Math.random()*8, rot:Math.random()*360, vr: (Math.random()*6-3), col: randomColor()});
+      }
+    }
+    function randomColor(){
+      const palette = ['#ff66b2','#ffd36b','#6be6ff','#9bff9b','#ff8a66','#c37bff'];
+      return palette[Math.floor(Math.random()*palette.length)];
+    }
+
+    function confettiLoop(){
+      ctx.clearRect(0,0,W,H);
+      for(let i=confettiParticles.length-1;i>=0;i--){
+        const p = confettiParticles[i];
+        p.x += p.vx; p.y += p.vy; p.vy += 0.12; p.rot += p.vr;
+        // draw rotated rect
+        ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
+        ctx.fillStyle = p.col; ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*0.6);
+        ctx.restore();
+        // remove if offscreen
+        if(p.y>H+40 || p.x < -80 || p.x>W+80) confettiParticles.splice(i,1);
+      }
+      requestAnimationFrame(confettiLoop);
+    }
+    confettiLoop();
+
+    // state
+    let intervalId = null;
+
+    function startCountdown(){
+      if(intervalId) clearInterval(intervalId);
+      intervalId = setInterval(()=>{
+        const now = new Date();
+        const target = nextNov22(now);
+        const delta = target - now;
+        if(delta<=0){
+          // countdown finished -> unlock week
+          unlockWeekFromNow();
+          showCongrats();
+          spawnConfettiBurst('both',140);
+          return;
         }
+        renderUnits(delta);
+      },250);
+      // first render immediately
+      const now = new Date(); renderUnits(nextNov22(now)-now);
+      countdownArea.style.display='block'; congratsEl.style.display='none';
+      note.textContent = '';
+    }
 
+    function showCongrats(){
+      if(intervalId){ clearInterval(intervalId); intervalId=null; }
+      countdownArea.style.display='none'; congratsEl.style.display='flex';
+    }
 
-        function showCelebration() {
-            countdownContainer.style.display = 'none';
-            messageContainer.style.display = 'block';
-            generateConfetti(500); // Genera confetti al final del conteo
-            if (isWithinCelebrationWeek()) {
-                generateConfetti(100); // Genera confetti al cargar en la semana de celebración
-            }
-        }
+    // unlock week: set local storage to mark end of celebration week
+    function unlockWeekFromNow(){
+      // Determine Nov22 of this year
+      const now = new Date();
+      let endingStart = new Date(now.getFullYear(),10,22,0,0,0,0);
+      // if current is after Nov22 (same day) but before next year's Nov22, we used this year's Nov22
+      if(now < endingStart){
+        // if now is before Nov22 then this function shouldn't be called, but keep logic
+      }
+      const weekEnd = new Date(endingStart.getTime() + 7*24*3600*1000);
+      localStorage.setItem(CONFETTI_KEY, String(weekEnd.getTime()));
+    }
 
-        function isWithinCelebrationWeek() {
-            const now = new Date();
-            const targetDate = new Date(2025, 10, 22); // Fecha de inicio de la celebración 
-            const celebrationEndDate = new Date(2025, 10, 29); // Una semana después
+    function checkWeekUnlocked(){
+      const val = localStorage.getItem(CONFETTI_KEY);
+      if(!val) return false;
+      const t = Number(val);
+      const now = Date.now();
+      if(now <= t){
+        return true;
+      }else{
+        localStorage.removeItem(CONFETTI_KEY);return false;
+      }
+    }
 
-            return now >= targetDate && now <= celebrationEndDate;
-        }
+    // on load
+    (function init(){
+      const now = new Date();
+      // if we're currently in the celebration week for this year's Nov 22
+      const thisNov22 = new Date(now.getFullYear(),10,22,0,0,0,0);
+      const nextNov = nextNov22(now);
 
+      // If localStorage indicates unlocked week, show congrats and confetti
+      if(checkWeekUnlocked()){
+        showCongrats(); spawnConfettiBurst('both',120);
+        note.textContent = 'Semana de celebración — contenido desbloqueado';
+        return;
+      }
 
-        function generateConfetti(numConfetti) {
-            for (let i = 0; i < numConfetti; i++) {
-                const confetti = document.createElement('div');
-                confetti.classList.add('confetti');
-                confetti.style.left = `${Math.random() * 100}vw`; // Posición horizontal aleatoria 😵
-                confetti.style.animationDelay = `${Math.random() * 5}s`;
-                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`; // Colores aleatorios 😵
-                confettiContainer.appendChild(confetti);
-            }
-        }
+      // If today is within 7 days after Nov22 of this year, also unlock
+      const afterThisNov = now - thisNov22;
+      if(afterThisNov>=0 && afterThisNov <= 7*24*3600*1000){
+        // within celebration week
+        const weekEnd = new Date(thisNov22.getTime() + 7*24*3600*1000);
+        localStorage.setItem(CONFETTI_KEY, String(weekEnd.getTime()));
+        showCongrats(); spawnConfettiBurst('both',120);
+        note.textContent = 'Semana de celebración — contenido desbloqueado';
+        return;
+      }
 
+      // otherwise start countdown normally
+      startCountdown();
+    })();
 
-        // Inicializa el conteo
-        intervalId = setInterval(updateCountdown, 1000);
+    // Additionally: if the user clicks anywhere during the celebration week, spawn lateral confetti
+    document.addEventListener('click', function(){ if(checkWeekUnlocked()){ spawnConfettiBurst('both',80); } });
 
-        // Generar confetti al cargar la página si está en la semana de celebración :D
-        if (isWithinCelebrationWeek()) {
-            countdownContainer.style.display = 'none';
-            messageContainer.style.display = 'block';
-            generateConfetti(100);
-        }
-        //End of file by Ender
-    </script> 
+    // Extra: accessibility: allow keyboard trigger
+    document.addEventListener('keydown', function(e){ if(e.key==='Enter' && checkWeekUnlocked()){ spawnConfettiBurst('both',80); } });
+
+    // Small optimization: ensure canvas resizes with card
+    const observer = new ResizeObserver(()=>{resize();}); observer.observe(document.querySelector('.card'));
+
+    // Prevent sleep of countdown when tab hidden? We update via interval; it's okay.
+  </script>
 </body>
-</html> 
-
-
-
+</html>
