@@ -3,8 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="icon" type="image/png" href="birthday_cake.png" />
-  <title>Cuenta regresiva - Feliz Cumpleaños Anii</title>
+  <link rel="icon" type="image/png" href="birthday_cake.png" /> 
+  //Icono de Muffin 🧁
+  <title>Cuenta regresiva ⏱ - Feliz Cumpleaños Anii 🎉</title>
+  //Titulo genial X'D
   <style>
     :root{
       --bg:#000;
@@ -20,7 +22,7 @@
       width:100%;max-width:920px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:18px;padding:28px;box-shadow:0 8px 30px rgba(0,0,0,0.7);position:relative;overflow:hidden;border:1px solid rgba(255,215,120,0.06);
     }
 
-    /* Decorative corner neon frames */
+    /* Decoraciones de Neon */
     .card::before, .card::after{
       content:'';position:absolute;width:90px;height:90px;border-radius:14px;pointer-events:none;mix-blend-mode:screen;opacity:0.65;filter:blur(10px);
     }
@@ -43,7 +45,7 @@
     .value{font-size:26px;font-weight:700;color:var(--gold);text-shadow: var(--neon-gold);letter-spacing:1px}
     .label-unit{font-size:12px;color:#ddd;margin-top:6px}
 
-    /* neon congrats panel */
+    /* Panel de Neon :D */
     .congrats{display:none;flex-direction:column;align-items:center;gap:14px;padding:20px}
     .congrats .neon{
       font-size:32px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:#fff;text-align:center;line-height:1;
@@ -65,10 +67,10 @@
 
     footer{display:flex;justify-content:space-between;align-items:center;margin-top:18px;color:#999;font-size:12px}
 
-    /* confetti canvas */
+    /* Lienzo de confeti  🎉*/
     #confetti{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
 
-    /* Responsive tweaks */
+    /* Ajuste Responsivo */
     @media (max-width:600px){.unit{min-width:86px;padding:10px}.value{font-size:20px}.congrats .neon{font-size:22px}.heart-svg{width:56px;height:56px}}
 
   </style>
@@ -86,14 +88,14 @@
 
         <div id="countdownArea">
           <div class="countdown" id="countdown">
-            <!-- dynamic units -->
+            <!-- Unidades Dinamicas -->
           </div>
         </div>
 
         <div class="congrats" id="congrats">
           <div class="neon">Feliz Cumpleaños Anii</div>
           <div class="heart-wrap">
-            <!-- neon heart SVG -->
+            <!-- Corazon Neon SVG -->
             <svg class="heart-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <defs>
                 <linearGradient id="g1" x1="0" x2="1">
@@ -143,7 +145,7 @@
   </div>
 
   <script>
-    // Spanish months
+    // Meses en Español
     const monthsEs = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
     const countdownEl = document.getElementById('countdown');
@@ -153,10 +155,10 @@
 
     const CONFETTI_KEY = 'anii_unlocked_until_v1';
 
-    // determine the next Nov 22 in local time
+    // determinar el próximo 22 de Noviembre en hora local
     function nextNov22(now){
       const year = now.getFullYear();
-      // create Nov 22 at 00:00:00 local time
+      // crear 22 de Noviembre a las 00:00:00 hora local
       let candidate = new Date(year, 10, 22, 0,0,0,0); // monthIndex 10 = Nov
       if(now > candidate){
         candidate = new Date(year+1, 10, 22, 0,0,0,0);
@@ -164,7 +166,7 @@
       return candidate;
     }
 
-    // create units display
+    // crea las unidades de tiempo restantes
     function renderUnits(delta){
       // delta in ms
       if(delta < 0) delta = 0;
@@ -197,7 +199,7 @@
       });
     }
 
-    // confetti system (simple canvas particles from sides)
+    // Sistema de confetti (partículas simples en canvas desde los lados) 🎉
     const canvas = document.getElementById('confetti');
     const ctx = canvas.getContext('2d');
     let W,H; function resize(){W=canvas.width=canvas.clientWidth;H=canvas.height=canvas.clientHeight} window.addEventListener('resize',resize); resize();
@@ -221,18 +223,18 @@
       for(let i=confettiParticles.length-1;i>=0;i--){
         const p = confettiParticles[i];
         p.x += p.vx; p.y += p.vy; p.vy += 0.12; p.rot += p.vr;
-        // draw rotated rect
+        // dibujar rectángulo rotado
         ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
         ctx.fillStyle = p.col; ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*0.6);
         ctx.restore();
-        // remove if offscreen
+        // eliminar si está fuera de pantalla
         if(p.y>H+40 || p.x < -80 || p.x>W+80) confettiParticles.splice(i,1);
       }
       requestAnimationFrame(confettiLoop);
     }
     confettiLoop();
 
-    // state
+    // estado del conteo regresivo 
     let intervalId = null;
 
     function startCountdown(){
@@ -242,7 +244,7 @@
         const target = nextNov22(now);
         const delta = target - now;
         if(delta<=0){
-          // countdown finished -> unlock week
+          // conteo regresivo terminado -> desbloquear semana 🔓
           unlockWeekFromNow();
           showCongrats();
           spawnConfettiBurst('both',140);
@@ -250,7 +252,7 @@
         }
         renderUnits(delta);
       },250);
-      // first render immediately
+      // primera renderización inmediata
       const now = new Date(); renderUnits(nextNov22(now)-now);
       countdownArea.style.display='block'; congratsEl.style.display='none';
       note.textContent = '';
@@ -261,14 +263,14 @@
       countdownArea.style.display='none'; congratsEl.style.display='flex';
     }
 
-    // unlock week: set local storage to mark end of celebration week
+    // desbloquear semana: establecer almacenamiento local para marcar el fin de la semana de celebración
     function unlockWeekFromNow(){
-      // Determine Nov22 of this year
+      // Determinar 22 de Noviembre de este año
       const now = new Date();
       let endingStart = new Date(now.getFullYear(),10,22,0,0,0,0);
-      // if current is after Nov22 (same day) but before next year's Nov22, we used this year's Nov22
+      // si la fecha actual es después del 22 de Noviembre (mismo día) pero antes del 22 de Noviembre del próximo año, usamos el 22 de Noviembre de este año
       if(now < endingStart){
-        // if now is before Nov22 then this function shouldn't be called, but keep logic
+        // si ahora es antes del 22 de Noviembre entonces esta función no debería ser llamada, pero mantenemos la lógica
       }
       const weekEnd = new Date(endingStart.getTime() + 7*24*3600*1000);
       localStorage.setItem(CONFETTI_KEY, String(weekEnd.getTime()));
@@ -286,24 +288,24 @@
       }
     }
 
-    // on load
+    // al cargar la página, inicializar
     (function init(){
       const now = new Date();
-      // if we're currently in the celebration week for this year's Nov 22
+      // si estamos actualmente en la semana de celebración para el 22 de Noviembre de este año
       const thisNov22 = new Date(now.getFullYear(),10,22,0,0,0,0);
       const nextNov = nextNov22(now);
 
-      // If localStorage indicates unlocked week, show congrats and confetti
+      // Si el almacenamiento local indica semana desbloqueada, mostrar felicitaciones y confetti
       if(checkWeekUnlocked()){
         showCongrats(); spawnConfettiBurst('both',120);
         note.textContent = 'Semana de celebración — contenido desbloqueado';
         return;
       }
 
-      // If today is within 7 days after Nov22 of this year, also unlock
+      // Si hoy está dentro de los 7 días después del 22 de Noviembre de este año, también desbloquear
       const afterThisNov = now - thisNov22;
       if(afterThisNov>=0 && afterThisNov <= 7*24*3600*1000){
-        // within celebration week
+        // dentro de la semana de celebración
         const weekEnd = new Date(thisNov22.getTime() + 7*24*3600*1000);
         localStorage.setItem(CONFETTI_KEY, String(weekEnd.getTime()));
         showCongrats(); spawnConfettiBurst('both',120);
@@ -311,20 +313,21 @@
         return;
       }
 
-      // otherwise start countdown normally
+      // de lo contrario iniciar conteo regresivo normalmente
       startCountdown();
     })();
 
-    // Additionally: if the user clicks anywhere during the celebration week, spawn lateral confetti
+    // Además: si el usuario hace clic en cualquier lugar durante la semana de celebración, generar confetti lateral
     document.addEventListener('click', function(){ if(checkWeekUnlocked()){ spawnConfettiBurst('both',80); } });
 
-    // Extra: accessibility: allow keyboard trigger
+    // Extra: accesibilidad: permitir activación por teclado
     document.addEventListener('keydown', function(e){ if(e.key==='Enter' && checkWeekUnlocked()){ spawnConfettiBurst('both',80); } });
 
-    // Small optimization: ensure canvas resizes with card
+    // Pequeña optimización: asegurar que el canvas se redimensiona con la tarjeta
     const observer = new ResizeObserver(()=>{resize();}); observer.observe(document.querySelector('.card'));
 
-    // Prevent sleep of countdown when tab hidden? We update via interval; it's okay.
+    // Prevenir que el conteo regresivo se detenga cuando la pestaña está oculta? Actualizamos mediante intervalo; está bien. 
+    //Fin del archivo por Ender :D
   </script>
 </body>
 </html>
