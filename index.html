@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="birthday_cake.png" />
-    <title>¡Tu Cumpleaños es:!</title>
-    <
+    <title>¡Tu Cumpleaños es en:!</title>
     <style>
         body {
             font-family: sans-serif;
@@ -64,7 +63,7 @@
             }
         }
 
-        /* Posicionamiento de confetti */
+        /* Posicionamiento de confetti */ 🎉
         .confetti-container {
             position: fixed;
             top: 0;
@@ -111,7 +110,7 @@
             const timeLeft = targetDate - now;
 
             if (timeLeft <= 0) {
-                clearInterval(intervalId); // Detener el conteo
+                clearInterval(intervalId); // Detener el conteo 🚦
                 showCelebration();
                 return;
             }
@@ -137,7 +136,7 @@
 
         function isWithinCelebrationWeek() {
             const now = new Date();
-            const targetDate = new Date(2025, 10, 22); // Fecha de inicio de la celebración
+            const targetDate = new Date(2025, 10, 22); // Fecha de inicio de la celebración 
             const celebrationEndDate = new Date(2025, 10, 29); // Una semana después
 
             return now >= targetDate && now <= celebrationEndDate;
@@ -148,9 +147,9 @@
             for (let i = 0; i < numConfetti; i++) {
                 const confetti = document.createElement('div');
                 confetti.classList.add('confetti');
-                confetti.style.left = `${Math.random() * 100}vw`; // Posición horizontal aleatoria
+                confetti.style.left = `${Math.random() * 100}vw`; // Posición horizontal aleatoria 😵
                 confetti.style.animationDelay = `${Math.random() * 5}s`;
-                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`; // Colores aleatorios
+                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`; // Colores aleatorios 😵
                 confettiContainer.appendChild(confetti);
             }
         }
@@ -159,13 +158,15 @@
         // Inicializa el conteo
         intervalId = setInterval(updateCountdown, 1000);
 
-        // Generar confetti al cargar la página si está en la semana de celebración
+        // Generar confetti al cargar la página si está en la semana de celebración :D
         if (isWithinCelebrationWeek()) {
             countdownContainer.style.display = 'none';
             messageContainer.style.display = 'block';
             generateConfetti(100);
         }
-    </script>
+        //End of file by Ender
+    </script> 
 </body>
-</html>
+</html> 
+
 
