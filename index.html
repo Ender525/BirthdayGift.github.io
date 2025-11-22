@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="images/birthday_cake.png" />
+    <title>¡Tu Cumpleaños es:!</title>
+    <
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: black;
+            color: white;
+            text-align: center;
+            margin: 0;
+            overflow: hidden; /* Evita barras de desplazamiento */
+        }
+
+        #countdown-container {
+            margin-top: 50vh; /* Centra verticalmente */
+            transform: translateY(-50%);
+            font-size: 3em;
+            text-shadow: 0 0 10px gold, 0 0 20px gold, 0 0 30px gold; /* Efecto neon dorado */
+        }
+
+        #message-container {
+            margin-top: 50vh; /* Centra verticalmente */
+            transform: translateY(-50%);
+            font-size: 3em;
+            display: none; /* Oculto inicialmente */
+        }
+
+        .neon-text {
+            color: #fff;
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #ff00de, 0 0 30px #ff00de, 0 0 40px #ff00de; /* Neon rosa */
+        }
+
+        .heart-neon {
+            font-size: 1.2em; /* Ajusta el tamaño del corazón */
+        }
+
+        /* Confetti */
+        .confetti {
+            position: absolute;
+            background-color: #f00; /* Color inicial, se cambiará */
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: confetti-fall 5s linear forwards, confetti-rotate 5s linear infinite;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        @keyframes confetti-rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Posicionamiento de confetti */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Permite que el confetti no interfiera con los clics */
+            z-index: 1000; /* Asegura que el confetti esté por encima de todo */
+        }
+
+        /* Media queries para responsividad */
+        @media (max-width: 768px) {
+            #countdown-container, #message-container {
+                font-size: 2em; /* Reduce el tamaño en dispositivos móviles */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="countdown-container">
+        <!-- El conteo regresivo se mostrará aquí -->
+    </div>
+
+    <div id="message-container">
+        <span class="neon-text">Feliz Cumpleaños</span> <span class="neon-text heart-neon">♥</span> <span class="neon-text">Anii! Te Amo ❤❤</span>
+    </div>
+
+    <div id="confetti-container" class="confetti-container">
+        <!-- Confetti se generará aquí -->
+    </div>
+
+    <script>
+        const countdownContainer = document.getElementById('countdown-container');
+        const messageContainer = document.getElementById('message-container');
+        const confettiContainer = document.getElementById('confetti-container');
+        let intervalId; // Para guardar el ID del intervalo y poder detenerlo
+
+        // Fecha objetivo
+        const targetDate = new Date(2025, 10, 22, 0, 0, 0); // Noviembre es el mes 10 (0-11)
+
+        function updateCountdown() {
+            const now = new Date();
+            const timeLeft = targetDate - now;
+
+            if (timeLeft <= 0) {
+                clearInterval(intervalId); // Detener el conteo
+                showCelebration();
+                return;
+            }
+
+            const months = Math.floor(timeLeft / (1000 * 60 * 60 * 24 * 30));
+            const days = Math.floor((timeLeft % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            countdownContainer.textContent = `${months} Meses ${days} Días ${hours} Horas ${minutes} Minutos ${seconds} Segundos`;
+        }
+
+
+        function showCelebration() {
+            countdownContainer.style.display = 'none';
+            messageContainer.style.display = 'block';
+            generateConfetti(500); // Genera confetti al final del conteo
+            if (isWithinCelebrationWeek()) {
+                generateConfetti(100); // Genera confetti al cargar en la semana de celebración
+            }
+        }
+
+        function isWithinCelebrationWeek() {
+            const now = new Date();
+            const targetDate = new Date(2025, 10, 22); // Fecha de inicio de la celebración
+            const celebrationEndDate = new Date(2025, 10, 29); // Una semana después
+
+            return now >= targetDate && now <= celebrationEndDate;
+        }
+
+
+        function generateConfetti(numConfetti) {
+            for (let i = 0; i < numConfetti; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = `${Math.random() * 100}vw`; // Posición horizontal aleatoria
+                confetti.style.animationDelay = `${Math.random() * 5}s`;
+                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`; // Colores aleatorios
+                confettiContainer.appendChild(confetti);
+            }
+        }
+
+
+        // Inicializa el conteo
+        intervalId = setInterval(updateCountdown, 1000);
+
+        // Generar confetti al cargar la página si está en la semana de celebración
+        if (isWithinCelebrationWeek()) {
+            countdownContainer.style.display = 'none';
+            messageContainer.style.display = 'block';
+            generateConfetti(100);
+        }
+    </script>
+</body>
+</html>
